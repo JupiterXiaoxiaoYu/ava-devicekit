@@ -11,6 +11,45 @@ PYTHONPATH=backend python3 -m ava_devicekit.cli run-firmware-ws --host 0.0.0.0 -
 
 Use long proxy read timeouts for hardware sessions and keep WebSocket ping enabled through `websocket_ping_interval` and `websocket_ping_timeout`.
 
+## Public URL Namespace
+
+Do not expose the operator and customer pages directly at the domain root on shared servers. Keep public HTTP routes under a product namespace and let the backend strip that prefix internally. The default public prefix is `/ava-devicekit`.
+
+| Public route | Internal route | Purpose |
+|---|---|---|
+| `/ava-devicekit/admin` | `/admin` | Operator dashboard |
+| `/ava-devicekit/customer` | `/customer` | C-end activation portal |
+| `/ava-devicekit/health` | `/health` | Gateway health check |
+| `/ava-devicekit/manifest` | `/manifest` | Active app manifest |
+| `/ava-devicekit/device/*` | `/device/*` | Device HTTP fallback/config/usage APIs |
+| `/ava/ota/` | `/ava/ota/` | Firmware OTA entrypoint |
+| `/ava/v1/` | WebSocket gateway | Firmware WebSocket |
+
+Set `public_base_url` to the public namespace, for example `https://jupdev.tech/ava-devicekit`, so activation cards link to `/ava-devicekit/customer`. If a different prefix is required, set `AVA_DEVICEKIT_PUBLIC_PREFIXES=/your-prefix`.
+
+Minimal nginx example:
+
+```nginx
+location /ava-devicekit/ {
+    proxy_pass http://127.0.0.1:8788;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-Prefix /ava-devicekit;
+}
+
+location /ava/v1/ {
+    proxy_pass http://127.0.0.1:8787;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_read_timeout 86400s;
+}
+```
+
+Local development may still use `/admin` and `/customer` directly on `127.0.0.1:8788`; the namespace rule is for public/shared domains.
+
 ## Runtime Safety
 
 | Area | Rule |

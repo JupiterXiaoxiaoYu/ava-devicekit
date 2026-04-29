@@ -197,11 +197,13 @@ cp userland/env.example .env.local
 
 `.env.local` is the local-only secret file for DeviceKit runs. It is git-ignored and is the only default startup secret source.
 
+Public/shared deployments should mount HTTP pages and APIs under a product namespace such as `/ava-devicekit`, while keeping firmware OTA/WS under `/ava/ota/` and `/ava/v1/`. Local development can still use `/admin` and `/customer` directly.
+
 Example runtime config:
 
 ```json
 {
-  "public_base_url": "https://ava.example.com",
+  "public_base_url": "https://ava.example.com/ava-devicekit",
   "websocket_url": "wss://ava.example.com/ava/v1/",
   "firmware_bin_dir": "data/bin",
   "websocket_ping_interval": 30,

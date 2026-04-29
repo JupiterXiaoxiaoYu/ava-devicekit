@@ -46,7 +46,7 @@ def make_handler(
 
         def do_GET(self) -> None:  # noqa: N802 - stdlib handler API
             parsed = urlparse(self.path)
-            path = parsed.path
+            path = self._normalized_path(parsed.path)
             query = parse_qs(parsed.query)
             if path == "/health":
                 self._send_json({"ok": True, "service": "ava-devicekit"})
@@ -296,7 +296,7 @@ def make_handler(
             self._send_json({"ok": False, "error": "not_found"}, HTTPStatus.NOT_FOUND)
 
         def do_POST(self) -> None:  # noqa: N802 - stdlib handler API
-            path = urlparse(self.path).path
+            path = self._normalized_path(urlparse(self.path).path)
             if path == "/device/register":
                 try:
                     self._send_json(control_plane.register_device(self._read_json()))
@@ -622,10 +622,30 @@ def make_handler(
         def _device_id(self) -> str:
             return normalize_device_id(self.headers.get("X-Ava-Device-Id") or "default")
 
+        def _normalized_path(self, path: str) -> str:
+            for prefix in _public_prefixes():
+                if path == prefix:
+                    return "/"
+                if path.startswith(prefix + "/"):
+                    return path[len(prefix):] or "/"
+            return path
+
+        def _public_prefix(self) -> str:
+            forwarded = str(self.headers.get("X-Forwarded-Prefix") or "").strip().rstrip("/")
+            if forwarded:
+                return forwarded
+            raw_path = urlparse(self.path).path
+            for prefix in _public_prefixes():
+                if raw_path == prefix or raw_path.startswith(prefix + "/"):
+                    return prefix
+            return ""
+
         def _public_base_url(self) -> str:
+            if settings.public_base_url:
+                return settings.public_base_url.rstrip("/")
             host = self.headers.get("Host", "127.0.0.1:8788")
             scheme = "https" if self.headers.get("X-Forwarded-Proto") == "https" else "http"
-            return f"{scheme}://{host}"
+            return f"{scheme}://{host}{self._public_prefix()}"
 
         def _authorized_admin(self) -> bool:
             return self._authorized(settings.admin_token_env)
@@ -904,6 +924,16 @@ def _step(step_id: str, title: str, done: bool, tab: str, api: str, description:
         "entry": entry,
         "description": description,
     }
+
+
+def _public_prefixes() -> tuple[str, ...]:
+    raw = os.environ.get("AVA_DEVICEKIT_PUBLIC_PREFIXES", "/ava-devicekit")
+    prefixes: list[str] = []
+    for item in raw.split(","):
+        prefix = item.strip().rstrip("/")
+        if prefix and prefix.startswith("/"):
+            prefixes.append(prefix)
+    return tuple(prefixes)
 
 
 def _admin_page() -> str:
