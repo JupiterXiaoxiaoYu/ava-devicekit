@@ -3,8 +3,8 @@
 Create a starter app:
 
 ```bash
-cd /path/to/ava-trading-esp32
-PYTHONPATH=ava-devicekit/backend \
+cd /path/to/ava-devicekit
+PYTHONPATH=backend \
 python3 -m ava_devicekit.cli init-app ./my-devicekit-app --type depin
 ```
 
@@ -48,7 +48,7 @@ current page and lets deterministic actions avoid stale server-side selection.
 Run the framework-owned server, then configure the app from the dashboard:
 
 ```bash
-cp ava-devicekit/userland/env.example ava-devicekit/.env.local
+cp userland/env.example .env.local
 ./scripts/run-devicekit-local.sh
 ```
 
@@ -66,8 +66,8 @@ cp ava-devicekit/userland/env.example ava-devicekit/.env.local
 Smoke-test the same loop without a browser:
 
 ```bash
-PYTHONPATH=ava-devicekit/backend \
-python3 ava-devicekit/examples/developer_zero_to_one_flow.py
+PYTHONPATH=backend \
+python3 examples/developer_zero_to_one_flow.py
 ```
 
 Expected output includes `app_provider_applied: true`, `device_registered: true`, and the first device screens.

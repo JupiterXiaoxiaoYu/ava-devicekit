@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.venv/
+venv/
+
+# Local secrets/runtime state
+.env
+.env.*
+!.env.example
+data/
+runtime.local.json
+*.local.json
+
+# Simulator build outputs
+simulator/build/
+simulator/bin/
+simulator/CMakeFiles/
+simulator/CMakeCache.txt
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

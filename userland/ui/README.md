@@ -51,7 +51,7 @@ A screen should expose the most useful state, not the whole framebuffer:
 }
 ```
 
-For token-style apps, `selected` may also be sent as legacy `token`; the backend
+For token-style apps, `selected` may also be sent as compatibility `token`; the backend
 normalizes both forms.
 
 ## Input Event Shape

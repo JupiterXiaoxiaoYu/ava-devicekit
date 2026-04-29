@@ -15,7 +15,7 @@ from ava_devicekit.formatting.numbers import format_money, format_percent, parse
 from ava_devicekit.screen import builders
 from ava_devicekit.streams.base import MarketStreamEvent
 
-DEFAULT_MANIFEST = Path(__file__).resolve().parents[3] / "apps" / "ava_box" / "manifest.json"
+DEFAULT_MANIFEST = Path(__file__).resolve().parents[3] / "reference_apps" / "ava_box" / "manifest.json"
 
 
 @dataclass

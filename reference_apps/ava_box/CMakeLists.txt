@@ -1,6 +1,6 @@
 # Ava Box reference app UI package.
 # Device firmware can add this directory to consume the Ava Box LVGL screens
-# without depending on the parent repository's legacy shared UI path.
+# without depending on the parent repository's previous shared UI path.
 
 idf_component_register(
     SRCS

@@ -185,7 +185,7 @@ void lv_obj_set_style_text_align(lv_obj_t *obj, lv_text_align_t value, lv_style_
 #define screen_feed_key feed_under_test_key
 #define screen_feed_should_ignore_live_push feed_under_test_should_ignore_live_push
 #define screen_feed_get_selected_context_json feed_under_test_get_selected_context_json
-#include "../../ava-devicekit/reference_apps/ava_box/ui/screen_feed.c"
+#include "../../reference_apps/ava_box/ui/screen_feed.c"
 #undef screen_feed_show
 #undef screen_feed_key
 #undef screen_feed_should_ignore_live_push

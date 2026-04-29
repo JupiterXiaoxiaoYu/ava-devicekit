@@ -53,7 +53,7 @@ def test_factory_loads_ava_box_with_mock_adapter():
 
 def test_factory_accepts_explicit_manifest_and_skill_store(tmp_path):
     session = create_device_session(
-        manifest_path=ROOT / "apps" / "ava_box" / "manifest.json",
+        manifest_path=ROOT / "reference_apps" / "ava_box" / "manifest.json",
         mock=True,
         skill_store_path=str(tmp_path / "skills.json"),
     )
@@ -257,11 +257,11 @@ def test_spotlight_back_restores_watchlist_signals_and_search_sources(tmp_path):
     assert back["data"]["mode"] == "search"
 
 
-def test_portfolio_sell_legacy_na_position_removes_and_returns_to_portfolio(tmp_path):
+def test_portfolio_sell_compat_na_position_removes_and_returns_to_portfolio(tmp_path):
     import json
 
     store_path = tmp_path / "skills.json"
-    legacy_addr = "Legacy111"
+    compat_addr = "Compat111"
     store_path.write_text(
         json.dumps(
             {
@@ -273,7 +273,7 @@ def test_portfolio_sell_legacy_na_position_removes_and_returns_to_portfolio(tmp_
                     {
                         "symbol": "OLD",
                         "chain": "solana",
-                        "token_id": f"{legacy_addr}-solana",
+                        "token_id": f"{compat_addr}-solana",
                         "amount": "0.1",
                         "value": "0.1 SOL",
                         "pnl": "$0",
@@ -293,7 +293,7 @@ def test_portfolio_sell_legacy_na_position_removes_and_returns_to_portfolio(tmp_
         {
             "type": "key_action",
             "action": "portfolio_sell",
-            "addr": legacy_addr,
+            "addr": compat_addr,
             "chain": "solana",
             "symbol": "OLD",
             "balance_raw": "0.1",
@@ -378,7 +378,7 @@ def test_paper_buy_confirm_fails_when_cash_is_zero(tmp_path):
     assert "Insufficient paper SOL balance" in result["data"]["body"]
 
 
-def test_legacy_screen_context_token_is_treated_as_selected():
+def test_compat_screen_context_token_is_treated_as_selected():
     session = create_device_session(mock=True)
     reply = session.handle(
         {

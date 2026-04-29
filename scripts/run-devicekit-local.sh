@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-ENV_FILE="${AVA_DEVICEKIT_ENV_FILE:-$ROOT/ava-devicekit/.env.local}"
+ENV_FILE="${AVA_DEVICEKIT_ENV_FILE:-$ROOT/.env.local}"
 CONFIG_FILE="${AVA_DEVICEKIT_RUNTIME_CONFIG:-/tmp/ava_devicekit_runtime.real.json}"
 SKILL_STORE="${AVA_DEVICEKIT_SKILL_STORE:-$ROOT/data/ava_box_app_state.json}"
 HOST="${AVA_DEVICEKIT_HOST:-127.0.0.1}"
@@ -19,7 +19,7 @@ else
 fi
 
 cd "$ROOT"
-PYTHONPATH="$ROOT/ava-devicekit/backend${PYTHONPATH:+:$PYTHONPATH}" \
+PYTHONPATH="$ROOT/backend${PYTHONPATH:+:$PYTHONPATH}" \
   python3 -m ava_devicekit.cli run-server \
     --host "$HOST" \
     --port "$HTTP_PORT" \

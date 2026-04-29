@@ -485,7 +485,7 @@ bool screen_notify_is_visible(void) { return false; }
 void screen_notify_key(int key) { (void)key; }
 
 #if defined(VERIFY_FEED)
-#include "../../ava-devicekit/reference_apps/ava_box/ui/screen_feed.c"
+#include "../../reference_apps/ava_box/ui/screen_feed.c"
 
 int main(void)
 {
@@ -508,7 +508,7 @@ int main(void)
     return ok ? 0 : 1;
 }
 #elif defined(VERIFY_PORTFOLIO)
-#include "../../ava-devicekit/reference_apps/ava_box/ui/screen_portfolio.c"
+#include "../../reference_apps/ava_box/ui/screen_portfolio.c"
 
 int main(void)
 {
@@ -560,7 +560,7 @@ int main(void)
 }
 #elif defined(VERIFY_SPOTLIGHT)
 #define AVE_SPOTLIGHT_SHOW_ONLY 1
-#include "../../ava-devicekit/reference_apps/ava_box/ui/screen_spotlight.c"
+#include "../../reference_apps/ava_box/ui/screen_spotlight.c"
 
 int main(void)
 {

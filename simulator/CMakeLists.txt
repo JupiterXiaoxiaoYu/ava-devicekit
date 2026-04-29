@@ -73,7 +73,7 @@ set(MAIN_SOURCES src/mouse_cursor_icon.c src/hal/hal.c src/sim_keymap.c mock/ws_
 set(MAIN_LIBS lvgl lvgl::examples lvgl::demos lvgl::thorvg ${SDL2_LIBRARIES})
 
 # -- Ava Box DeviceKit reference UI screens -------------------------------
-set(AVA_BOX_UI_DIR ${CMAKE_SOURCE_DIR}/../ava-devicekit/reference_apps/ava_box/ui)
+set(AVA_BOX_UI_DIR ${CMAKE_SOURCE_DIR}/../reference_apps/ava_box/ui)
 add_subdirectory(${AVA_BOX_UI_DIR}
                  ${CMAKE_BINARY_DIR}/shared_ave_screens)
 list(APPEND MAIN_LIBS shared_ave_screens)

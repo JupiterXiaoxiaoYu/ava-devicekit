@@ -66,7 +66,7 @@ Ava Box is implemented as userland on top of the framework:
 
 | Ava Box Part | Location |
 |---|---|
-| Manifest | `apps/ava_box/manifest.json` |
+| Manifest | `reference_apps/ava_box/manifest.json` |
 | App routing | `backend/ava_devicekit/apps/ava_box.py` |
 | App skills | `backend/ava_devicekit/apps/ava_box_skills/` |
 | Solana data | `backend/ava_devicekit/adapters/solana.py` |

@@ -1,24 +1,32 @@
 # Ava DeviceKit
 
-Ava DeviceKit is the clean framework boundary for ESP32-based Solana AI hardware apps. It is intentionally separate from the previous monorepo assistant runtime and exposes its own app, device, provider, OTA, and control-plane contracts.
+Ava DeviceKit is the standalone framework boundary for ESP32-based Solana AI hardware apps. It owns the app, device, provider, OTA, and control-plane contracts needed to build and operate hardware products without depending on a parent application runtime.
 
 ## What This Contains
 
 | Directory | Role |
 |---|---|
 | `backend/ava_devicekit/` | Framework package: app/session types, adapters, gateway, model router, screen builders |
-| `apps/ava_box/` | Ava Box reference app manifest |
+| `backend/ava_devicekit/apps/` | Runtime app interfaces and the Ava Box backend reference app implementation |
+| `reference_apps/ava_box/` | Ava Box reference app manifest, LVGL UI package, and product-specific assets |
 | `adapters/solana/` | Solana adapter notes and adapter-specific behavior |
 | `schemas/` | Public manifest, screen payload, and action draft contracts |
 | `examples/` | Runnable local examples and payload fixtures |
 | `firmware/` | Target boundary for clean ESP32 runtime integration |
 | `shared_ui/` | Target boundary for portable LVGL screen runtime |
-| `reference_apps/ava_box/` | Ava Box app-level UI package and product-specific reference assets |
 | `userland/` | Developer-facing configuration templates, capability list, and extension templates |
 
-## Boundary
+## App Directory Boundary
 
-The clean framework must not import parent-repo assistant-runtime modules such as `core.*`, `plugins_func.*`, or implementation-specific registration/connection classes.
+There are three app-related surfaces, and they are intentionally separate:
+
+| Surface | Role | Example |
+|---|---|---|
+| Framework runtime app code | Python interfaces, session routing, and app skill implementations loaded by the backend | `backend/ava_devicekit/apps/` |
+| Reference app package | A complete product example containing its manifest and firmware/UI assets | `reference_apps/ava_box/` |
+| App templates | Starting points for developers building new products | `examples/apps/` and `userland/app/` |
+
+Ava Box is not duplicated: its backend behavior lives in `backend/ava_devicekit/apps/ava_box.py`, while its concrete manifest and LVGL UI live in `reference_apps/ava_box/`.
 
 ## Userland Boundary
 
@@ -40,7 +48,7 @@ The machine-readable capability map is `userland/capabilities.json`.
 
 ## App Logic Boundary
 
-`ChainAdapter` stays limited to basic chain data: feed, search, and token detail. Trading drafts, watchlists, portfolio composition, and skill routing live in the reference app layer (`apps/ava_box.py` plus `apps/ava_box_skills/`). This keeps additional chain/helper adapters replaceable without turning the framework into an Ava Box trading server.
+`ChainAdapter` stays limited to basic chain data: feed, search, and token detail. Trading drafts, watchlists, portfolio composition, and skill routing live in the reference app layer (`backend/ava_devicekit/apps/ava_box.py` plus `backend/ava_devicekit/apps/ava_box_skills/`). This keeps additional chain/helper adapters replaceable without turning the framework into an Ava Box trading server.
 
 ## Numeric Display Policy
 
@@ -61,8 +69,8 @@ Ava Box can run through DeviceKit without importing the previous assistant backe
 
 | Layer | Current Implementation |
 |---|---|
-| Hardware app contract | `apps/base.py` defines the minimal `boot()` and `handle()` runtime interface |
-| App registry | `apps/registry.py` loads manifests and creates the Ava Box reference app |
+| Hardware app contract | `backend/ava_devicekit/apps/base.py` defines the minimal `boot()` and `handle()` runtime interface |
+| App registry | `backend/ava_devicekit/apps/registry.py` loads manifests and creates the Ava Box reference app |
 | Adapter registry | `adapters/registry.py` resolves built-ins (`solana`, `mock_solana`) and runtime-configured custom chain adapters |
 | Session factory | `gateway/factory.py` creates a runnable `DeviceSession` from CLI or code |
 | HTTP gateway | `gateway/http_server.py` exposes boot/message/state/outbox endpoints |
@@ -139,7 +147,7 @@ ESP32 input / voice
 | TTS provider | Framework provider boundary | Selectable TTS registry with mock, OpenAI-compatible HTTP TTS, and custom provider classes |
 | LLM fallback | Framework provider boundary | Runtime-configured OpenAI-compatible chat provider plus custom LLM provider classes through `providers/registry.py` |
 | Live market WSS | Ava Box reference integration | AVE data WSS frame builder/parser in `streams/ave_data_wss.py` |
-| Real trade/wallet flow | Ava Box app layer | Paper execution by default; AVE proxy/custodial wallet provider, optional self-custody transaction provider, and custom execution provider classes in `apps/ava_box_skills/execution.py` |
+| Real trade/wallet flow | Ava Box app layer | Paper execution by default; AVE proxy/custodial wallet provider, optional self-custody transaction provider, and custom execution provider classes in `backend/ava_devicekit/apps/ava_box_skills/execution.py` |
 | Admin API | Framework gateway | `/admin/capabilities`, `/admin/runtime`, `/admin/apps`, `/admin/devices`, `/admin/events`, `/admin/ota/firmware`, `/admin/developer/services`, optional bearer auth |
 | Control plane | Framework gateway | Local users/projects/devices registry, device provisioning token exchange, per-device bearer auth, and sanitized fleet snapshot APIs |
 | App-linked hardware ops | Framework control plane | App is the product unit; project is its internal backing record; devices, purchases, activation cards, customers, hardware profiles, and app logs are shown by app |
@@ -163,6 +171,7 @@ ESP32 input / voice
 | `docs/solana-reference-repos-review.md` | Solana ESP32 / DePIN / payment / signer reference repository review, license notes, optional dependencies, and DeviceKit mapping |
 | `docs/framework-vs-avabox.md` | Strict boundary between DeviceKit framework and Ava Box app logic |
 | `docs/completion-status.md` | Current framework/app completion matrix and runtime assumptions |
+| `docs/development-history.md` | Imported source-branch development worklog and standalone extraction record |
 | `docs/getting-started.md` | Local install, offline run, runtime provider config, admin APIs |
 | `docs/build-your-first-app.md` | Create and structure a new hardware app |
 | `docs/generic-screen-input-context.md` | Add custom pages, hardware input, and AI-readable page context |
@@ -176,18 +185,17 @@ ESP32 input / voice
 | `docs/ai-depin-cloud-prd.md` | Product requirements for the self-hosted AI DePIN control plane and Solana app template |
 | `docs/c-end-hardware-ops-prd.md` | Product requirements for operating C-end hardware users from a self-hosted console |
 | `docs/hardware-service-product-closure.md` | Stakeholder and product-flow closure for the operator console vs customer/device model |
-| `docs/compatibility-capability-inventory.md` | Adapted capability inventory for firmware, backend, providers, UI, OTA, and dashboard boundaries |
 
 ## Existing Firmware Compatibility
 
 The current production firmware can be moved over incrementally by pointing its OTA URL at the DeviceKit HTTP gateway and its WebSocket URL at the compatibility gateway:
 
 ```bash
-cp ava-devicekit/userland/env.example ava-devicekit/.env.local
+cp userland/env.example .env.local
 ./scripts/run-devicekit-local.sh
 ```
 
-`ava-devicekit/.env.local` is the local-only secret file for DeviceKit runs. It is git-ignored and replaces any legacy environment file as the startup source.
+`.env.local` is the local-only secret file for DeviceKit runs. It is git-ignored and is the only default startup secret source.
 
 Example runtime config:
 
@@ -220,14 +228,9 @@ Example runtime config:
 This preserves the deployed firmware wire protocol while keeping the implementation inside DeviceKit-owned modules.
 
 
-## Migration Capability Review
-
-Before migrating more code from the parent repo, review `docs/compatibility-capability-inventory.md`. Every carried-over capability is mapped to `keep`, `replace`, `drop`, or `optional` so DeviceKit keeps clean ownership while preserving useful production behavior such as Wi-Fi provisioning, OTA, audio, model providers, and live market streams.
-
 ## Run Local Checks
 
 ```bash
-cd ava-devicekit
 PYTHONPATH=backend python3 examples/demo_flow.py
 PYTHONPATH=backend python3 -m ava_devicekit.cli run-http --host 127.0.0.1 --port 8788 --config userland/runtime.example.json
 PYTHONPATH=backend python3 examples/mock_device_client.py --base-url http://127.0.0.1:8788

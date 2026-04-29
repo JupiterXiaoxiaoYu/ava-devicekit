@@ -332,7 +332,7 @@
     {
       "id": "trade_execution_provider",
       "interface": "backend/ava_devicekit/apps/ava_box_skills/execution.py::TradeExecutionProvider",
-      "template": "apps/ava_box_skills/",
+      "template": "backend/ava_devicekit/apps/ava_box_skills/",
       "user_action": "app_layer_implement",
       "description": "Creates app-specific wallet/trade execution requests; selectable through execution.mode/class/options and not part of framework core."
     },
@@ -391,7 +391,7 @@
       "id": "ava_box",
       "kind": "hardware_app",
       "paths": [
-        "apps/ava_box/manifest.json",
+        "reference_apps/ava_box/manifest.json",
         "backend/ava_devicekit/apps/ava_box.py",
         "backend/ava_devicekit/apps/ava_box_skills/"
       ]

@@ -29,7 +29,7 @@
 #define WS_PORT 8787
 #define WS_PATH "/ava/v1/?device-id=ave-sim&client-id=sim-001"
 
-/* Simulator hello for the DeviceKit legacy-compatible gateway. */
+/* Simulator hello for the DeviceKit firmware-compatible gateway. */
 #define HELLO_MSG \
     "{\"type\":\"hello\",\"version\":3,\"transport\":\"websocket\"," \
     "\"audio_params\":{\"format\":\"pcm16\",\"sample_rate\":16000," \
@@ -317,7 +317,7 @@ void ws_client_send_text(const char *text)
         ws_send_frame(fd, msg, strlen(msg));
         printf("[AVE ws] sent: \"%s\"\n", text);
     } else {
-        printf("[AVE ws] not connected — start server: cd ava-devicekit && PYTHONPATH=backend python3 -m ava_devicekit.cli run-legacy-ws --config userland/runtime.example.json\n");
+        printf("[AVE ws] not connected — start server: cd ava-devicekit && PYTHONPATH=backend python3 -m ava_devicekit.cli run-firmware-ws --config userland/runtime.example.json\n");
     }
 }
 
@@ -333,7 +333,7 @@ void ws_client_send_json(const char *json)
         ws_send_frame(fd, json, strlen(json));
         printf("[AVE ws] sent JSON: %.80s\n", json);
     } else {
-        printf("[AVE ws] not connected — start server: cd ava-devicekit && PYTHONPATH=backend python3 -m ava_devicekit.cli run-legacy-ws --config userland/runtime.example.json\n");
+        printf("[AVE ws] not connected — start server: cd ava-devicekit && PYTHONPATH=backend python3 -m ava_devicekit.cli run-firmware-ws --config userland/runtime.example.json\n");
     }
 }
 

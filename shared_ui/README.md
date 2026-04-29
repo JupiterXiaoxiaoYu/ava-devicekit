@@ -77,6 +77,6 @@ ava_dk_ui_emit_input_event(&ui, &event, current_context_json);
 
 The `current_context_json` should be the active screen's `ContextSnapshot`.
 
-## Migration From Legacy Screens
+## Porting Existing Screens
 
-The production Ava Box LVGL implementation now lives in `ava-devicekit/reference_apps/ava_box/ui/`. New apps should depend on DeviceKit screen contracts and vtables rather than repo-level legacy screen-manager APIs.
+The production Ava Box LVGL implementation now lives in `reference_apps/ava_box/ui/`. New apps should depend on DeviceKit screen contracts and vtables rather than repo-level app-specific screen-manager APIs.

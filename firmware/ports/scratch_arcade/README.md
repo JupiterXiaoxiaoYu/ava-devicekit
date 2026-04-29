@@ -2,7 +2,7 @@
 
 This directory is the clean Scratch Arcade board port target for Ava DeviceKit.
 It captures the board-specific mapping that the current Ava Box hardware needs
-without importing the legacy firmware application class.
+without importing the previous firmware application class.
 
 | Area | DeviceKit boundary |
 |---|---|

@@ -76,23 +76,23 @@ static int run_keymap_expectations(void)
     ok &= expect_equal(
         ave_sim_map_scancode_to_ave_key(SDL_SCANCODE_Z),
         -1,
-        "legacy keyboard Z should no longer map to AVE keys");
+        "old keyboard Z should no longer map to AVE keys");
     ok &= expect_equal(
         ave_sim_map_scancode_to_ave_key(SDL_SCANCODE_W),
         -1,
-        "legacy keyboard W should no longer map to AVE keys");
+        "old keyboard W should no longer map to AVE keys");
     ok &= expect_equal(
         ave_sim_map_scancode_to_ave_key(SDL_SCANCODE_S),
         -1,
-        "legacy keyboard S should no longer map to AVE keys");
+        "old keyboard S should no longer map to AVE keys");
     ok &= expect_equal(
         ave_sim_map_scancode_to_ave_key(SDL_SCANCODE_Q),
         -1,
-        "legacy keyboard Q should no longer map to AVE keys");
+        "old keyboard Q should no longer map to AVE keys");
     ok &= expect_equal(
         ave_sim_map_scancode_to_ave_key(SDL_SCANCODE_E),
         -1,
-        "legacy keyboard E should no longer map to AVE keys");
+        "old keyboard E should no longer map to AVE keys");
     ok &= expect_equal(
         ave_sim_map_scancode_to_ave_key(SDL_SCANCODE_P),
         -1,

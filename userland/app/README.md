@@ -16,7 +16,7 @@ A hardware app is product logic built on DeviceKit. It should not modify core se
 Use the CLI to create a starter app from any template:
 
 ```bash
-PYTHONPATH=ava-devicekit/backend python3 -m ava_devicekit.cli init-app ./my-app --type depin_reward_device
+PYTHONPATH=backend python3 -m ava_devicekit.cli init-app ./my-app --type depin_reward_device
 ```
 
 | Type | App ID | Purpose |

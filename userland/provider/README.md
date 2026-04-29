@@ -8,7 +8,7 @@ Providers are deployment-owned integrations for AI or media services. Configure 
 | LLM | `providers/llm/base.py::LLMProvider` | `providers/llm/openai_compatible.py` | Framework |
 | TTS | `providers/tts/base.py::TTSProvider` | `providers/tts/mock.py`, `providers/tts/openai_compatible.py`, `providers/tts/alibl_stream.py` | Framework |
 | Market stream | `streams/base.py::MarketStreamAdapter` | `streams/mock.py`, `streams/polling.py`, `streams/ave_data_wss.py` | Framework contract; AVE WSS is Ava Box/reference |
-| Trade execution | `apps/ava_box_skills/execution.py::TradeExecutionProvider` | Paper, AVE proxy wallet, AVE Solana transaction construction, custom class | Ava Box app |
+| Trade execution | `backend/ava_devicekit/apps/ava_box_skills/execution.py::TradeExecutionProvider` | Paper, AVE proxy wallet, AVE Solana transaction construction, custom class | Ava Box app |
 
 Rules:
 

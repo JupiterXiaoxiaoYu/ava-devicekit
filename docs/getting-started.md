@@ -10,8 +10,8 @@ python3 -m pip install -e .[dev,websocket]
 ## Run The Reference App Against DeviceKit
 
 ```bash
-cd /path/to/ava-trading-esp32
-cp ava-devicekit/userland/env.example ava-devicekit/.env.local
+cd /path/to/ava-devicekit
+cp userland/env.example .env.local
 ./scripts/run-devicekit-local.sh
 ```
 
@@ -92,8 +92,8 @@ Use this sequence to verify the local service is usable as a hardware-product ba
 This script creates an app record, app-level provider override, app-level Solana RPC service, service plan, purchase activation card, device registration, and first device messages against an in-process DeviceKit server:
 
 ```bash
-PYTHONPATH=ava-devicekit/backend \
-python3 ava-devicekit/examples/developer_zero_to_one_flow.py
+PYTHONPATH=backend \
+python3 examples/developer_zero_to_one_flow.py
 ```
 
 ## Wallet-Signature Purchase Flow

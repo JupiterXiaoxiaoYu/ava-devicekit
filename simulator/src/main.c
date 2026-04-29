@@ -3,7 +3,7 @@
  * Ava Box PC simulator entry point.
  *
  * Mirrors the ESP32 firmware:
- *  - Same LVGL screens via ava-devicekit/reference_apps/ava_box/ui
+ *  - Same LVGL screens via reference_apps/ava_box/ui
  *  - Same WebSocket protocol to the DeviceKit gateway
  *  - Same button key codes (arrow keys + literal A/B/X/Y map to hardware keys)
  *

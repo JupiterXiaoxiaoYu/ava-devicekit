@@ -19,14 +19,14 @@ The current production firmware still lives in the repo-level `firmware/` direct
 | File | Purpose |
 |---|---|
 | `include/ava_devicekit_runtime.h` | Small C runtime contract for device state, network events, hello/listen messages, and wake detection |
-| `src/ava_devicekit_runtime.c` | Framework-owned implementation adapted from the legacy application/network state flow |
+| `src/ava_devicekit_runtime.c` | Framework-owned implementation adapted from the deployed application/network state flow |
 | `tests/test_ava_devicekit_runtime.c` | Host-side contract test compiled by pytest |
 
-The code intentionally does not include ESP-IDF or legacy assistant headers. ESP32 board ports should wire their Wi-Fi manager, WebSocket transport, microphone, speaker, and screen code into this boundary.
+The code intentionally does not include ESP-IDF or previous assistant headers. ESP32 board ports should wire their Wi-Fi manager, WebSocket transport, microphone, speaker, and screen code into this boundary.
 
-## Mapping From Legacy Firmware
+## Mapping From Existing Firmware
 
-| Legacy behavior | DeviceKit boundary |
+| Existing behavior | DeviceKit boundary |
 |---|---|
 | `WifiBoard::StartNetwork` / Wi-Fi events | `ava_dk_runtime_on_network_event()` |
 | `Application::InitializeProtocol` hello frame | `ava_dk_runtime_send_hello()` |
